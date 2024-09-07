@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
 
                     const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
                     console.log(credentials.password)
-                     
+
                     if (isPasswordCorrect) {
                         return user;
                     } else {
@@ -44,30 +44,30 @@ export const authOptions: NextAuthOptions = {
             }
         })
     ],
-    callbacks:{
-        async jwt({token,user}){
-            if(user){
-                token._id=user._id?.toString()
-                token.isVerified=user.isVerified;
-                token.isAcceptingMessages= user.isAcceptingMessages;
-                token.username=user.username;
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token._id = user._id?.toString()
+                token.isVerified = user.isVerified;
+                token.isAcceptingMessages = user.isAcceptingMessages;
+                token.username = user.username;
             }
             return token
         },
-        async session({session,token}){
-            if(token){
-                session.user._id=token._id;
-                session.user.isVerified=token.isVerified;
-                session.user.isAcceptingMessages=token.isAcceptingMessages;
-                session.user.username=token.username
+        async session({ session, token }) {
+            if (token) {
+                session.user._id = token._id;
+                session.user.isVerified = token.isVerified;
+                session.user.isAcceptingMessages = token.isAcceptingMessages;
+                session.user.username = token.username
             }
             return session
         }
     },
-    pages:{
+    pages: {
         signIn: '/sign-in'
     },
-    session:{
+    session: {
         strategy: "jwt"
     },
     secret: process.env.NEXTAUTH_SECRET,
