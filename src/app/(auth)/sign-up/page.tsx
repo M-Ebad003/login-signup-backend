@@ -40,7 +40,6 @@ const SignUp = () => {
                 setUsernameMessage('');
                 try {
                     const response = await axios.get(`/api/checkUsername?username=${username}`)
-                    console.log(response)
                     setUsernameMessage(response.data.message)
                 } catch (error) {
                     const axiosError = error as AxiosError<apiResponse>;
@@ -77,7 +76,7 @@ const SignUp = () => {
     }
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                 <div className="text-center">
                     <h1 className="text-4xl font-extrabold tracking-light lg:text-5xl mb-6">Join obscurity </h1>
                     <p className="mb-4">Sign up to start your anonymous adventure</p>
@@ -89,7 +88,7 @@ const SignUp = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Username</FormLabel>
+                                    <FormLabel>Username *</FormLabel>
                                     <FormControl>
                                         <Input placeholder="Enter your username" {...field}
                                             onChange={(e) => {
@@ -98,6 +97,9 @@ const SignUp = () => {
                                             }} />
                                     </FormControl>
                                     {isCheckingUsername && <Loader2 className="animate-spin" />}
+                                    <p className={`text-sm ${usernameMessage === 'Username is unique' ? 'text-green-500' : 'text-red-500'}`}>
+                                        {usernameMessage}
+                                    </p>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -107,7 +109,7 @@ const SignUp = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Email *</FormLabel>
                                     <FormControl>
                                         <Input placeholder="Enter your email" {...field} />
                                     </FormControl>
@@ -120,7 +122,7 @@ const SignUp = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Password *</FormLabel>
                                     <FormControl>
                                         <Input type="password" placeholder="Enter your password" {...field} />
                                     </FormControl>
@@ -128,18 +130,20 @@ const SignUp = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
-                                </>
-                            ) : ('Signup')}
-                        </Button>
+                        <div className="flex justify-center items-center">
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+                                    </>
+                                ) : ('Signup')}
+                            </Button>
+                        </div>
                     </form>
                 </Form>
                 <div className="text-center mt-4">
                     <p>
-                        Already a member?{''}
+                        Already a member?{' '}
                         <Link href='/sign-in' className="text-blue-600 hover:text-blue-800">Sign in</Link>
                     </p>
                 </div>
