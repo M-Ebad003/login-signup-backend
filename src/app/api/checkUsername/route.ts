@@ -13,14 +13,11 @@ export async function GET(request: Request) {
     
     try {
         const { searchParams } = new URL(request.url);
-        console.log(searchParams);
-
+        
         const queryParams = {
             username: searchParams.get('username')
         }
         const result = UsernameQuerySchema.safeParse(queryParams);
-
-        console.log(result) // TODO : remove
 
         if (!result.success) {
             const usernameErrors = result.error.format().username?._errors || []
