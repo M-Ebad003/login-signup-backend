@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(request: Request) {
     await connectToDb();
-    
+
     try {
         const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -25,17 +25,17 @@ export async function POST(request: Request) {
         const existingUserVerificationByEmail = await UserModel.findOne({ email });
 
         if (existingUserVerificationByEmail) {
-            if(existingUserVerificationByEmail.isVerified){
+            if (existingUserVerificationByEmail.isVerified) {
                 return Response.json({
                     successs: false,
                     message: 'User already exist with this email'
-    
+
                 }, { status: 400 });
-            }else{
-                const hashedPassword= await bcrypt.hash(password,10);
-                existingUserVerificationByEmail.password=hashedPassword;
-                existingUserVerificationByEmail.verifyCode=verifyCode;
-                existingUserVerificationByEmail.verifyCodeExpiry=new Date(Date.now()+ 3600000);
+            } else {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                existingUserVerificationByEmail.password = hashedPassword;
+                existingUserVerificationByEmail.verifyCode = verifyCode;
+                existingUserVerificationByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
                 await existingUserVerificationByEmail.save();
             }
         } else {
@@ -72,16 +72,14 @@ export async function POST(request: Request) {
 
         }, { status: 201 });
 
-    } catch (error) { 
+    } catch (error) {
         console.error('Error while registering the user', error)
         return Response.json(
             {
                 success: false,
                 message: 'Error while registering the user'
             },
-            {
-                status: 500
-            }
+            { status: 500 }
         )
     }
 }
