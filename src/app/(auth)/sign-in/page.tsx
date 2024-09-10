@@ -25,7 +25,6 @@ const signin = () => {
   const router = useRouter()
   const { toast } = useToast()
   const [isSubmitting, setisSubmitting] = useState(false)
-  const ref=useRef<any>(null)
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -57,7 +56,7 @@ const signin = () => {
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-300'>
-      <div className='w-full text-white max-w-sm shadow-lg p-10 space-y-8 bg-[#10103f] rounded-lg'>
+      <div className='w-full max-w-sm shadow-lg p-10 space-y-8 bg-gray-100 rounded-lg'>
         <div className='text-center'>
           <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl mb-2">Sign in to nextify</h1>
           <p className='text-sm mb-4 text-[#FFFFFFA6]'>Welcome back! Please sign in to continue</p>

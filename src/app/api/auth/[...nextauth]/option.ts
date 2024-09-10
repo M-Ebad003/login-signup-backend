@@ -31,7 +31,6 @@ export const authOptions: NextAuthOptions = {
                     }
 
                     const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
-                    console.log(credentials.password)
 
                     if (isPasswordCorrect) {
                         return user;
@@ -47,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token._id = user._id?.toString()
+                token._id = user._id?.toString();
                 token.isVerified = user.isVerified;
                 token.isAcceptingMessages = user.isAcceptingMessages;
                 token.username = user.username;
