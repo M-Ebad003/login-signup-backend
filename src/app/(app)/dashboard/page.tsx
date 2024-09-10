@@ -1,8 +1,12 @@
+import MessageCard from '@/components/MessageCard'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <MessageCard/>
+    </div>
+
   )
 }
 
