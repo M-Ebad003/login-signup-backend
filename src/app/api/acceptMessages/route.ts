@@ -3,6 +3,7 @@ import { authOptions } from "../auth/[...nextauth]/option";
 import { User } from "next-auth";
 import { connectToDb } from "@/lib/database";
 import { UserModel } from "@/model/user.model";
+import { revalidatePath } from "next/cache";
 
 
 export async function POST(request: Request) {
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
                 updatedUser
             }, { status: 200 }
         )
+        
     } catch (error) {
         console.log('failed to update user status')
         return Response.json(

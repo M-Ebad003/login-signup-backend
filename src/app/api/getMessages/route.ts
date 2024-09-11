@@ -30,7 +30,6 @@ export async function GET(request: Request) {
             { $sort: { 'messages.createdAt': -1 } },
             { $group: { _id: '$_id', messages: { $push: '$messages' } } }
         ])
-        console.log(user)
         if (!user || user.length === 0) {
             console.log('no user')
             return Response.json(
@@ -39,7 +38,7 @@ export async function GET(request: Request) {
                     message: 'User not found'
                 }, { status: 401 }
             )
-            
+
         }
         return Response.json(
             {
