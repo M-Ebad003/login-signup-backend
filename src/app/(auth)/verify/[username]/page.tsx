@@ -11,6 +11,11 @@ import { useForm } from 'react-hook-form'
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from '@/components/ui/input'
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSlot,
+} from "@/components/ui/input-otp"
 
 const verifyAccount = () => {
     const router = useRouter();
@@ -55,17 +60,26 @@ const verifyAccount = () => {
                             control={form.control}
                             name="code"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Verification Code</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder='code'  {...field} />
+                                <FormItem className='flex flex-col justify-center items-center text-center'>
+                                    <FormLabel className='mb-2'>Verification Code</FormLabel>
+                                    <FormControl >
+                                        <InputOTP  maxLength={6} {...field}>
+                                            <InputOTPGroup >
+                                                <InputOTPSlot index={0} />
+                                                <InputOTPSlot index={1} />
+                                                <InputOTPSlot index={2} />
+                                                <InputOTPSlot index={3} />
+                                                <InputOTPSlot index={4} />
+                                                <InputOTPSlot index={5} />
+                                            </InputOTPGroup>
+                                        </InputOTP>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <div className="text-center mt-4">
-                            <Button type="submit">Send Verification Code</Button>
+                            <Button type="submit">Submit</Button>
                         </div>
                     </form>
                 </Form>

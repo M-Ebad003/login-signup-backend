@@ -13,6 +13,7 @@ import axios, { AxiosError } from 'axios'
 import { Loader2, RefreshCcw } from 'lucide-react'
 import { User } from 'next-auth'
 import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -123,7 +124,8 @@ const page = () => {
     })
   }
   if (!session || !session.user) {
-    return <div>Please log in</div>
+    redirect('/')
+    
   }
 
   return (
