@@ -30,8 +30,8 @@ export async function GET(request: Request) {
             { $sort: { 'messages.createdAt': -1 } },
             { $group: { _id: '$_id', messages: { $push: '$messages' } } }
         ])
+        console.log(user[0]?.messages)
         if (!user || user.length === 0) {
-            console.log('no user')
             return Response.json(
                 {
                     success: false,

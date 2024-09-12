@@ -63,6 +63,7 @@ const page = () => {
     try {
       const response = await axios.get<apiResponse>('/api/getMessages')
       setMessages(response.data?.messages || [])
+      console.log(response.data?.messages)
       if (refresh) {
         toast({
           title: 'Refresing Messages',
@@ -110,7 +111,6 @@ const page = () => {
     }
   }
   // const { username } = session?.user as User;
-  // console.log(session?.user.username)
   // TODO: 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${session?.user.username}`
