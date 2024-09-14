@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
     const user: User = session?.user as User;
 
-    if (!session || !session.user) {
+    if (!session || !user) {
         return Response.json(
             {
                 success: false,
@@ -23,11 +23,11 @@ export async function GET(request: Request) {
     const userId = new mongoose.Types.ObjectId(user._id);
     try {
         const user = await UserModel.aggregate([
-            { $match: { id: userId } },
+            { $match: { _id: userId } },
             { $unwind: '$messages' },
             { $sort: { 'messages.createdAt': -1 } },
             { $group: { _id: '$_id', messages: { $push: '$messages' } } }
-        ])
+        ]).exec();
         if (!user || user.length === 0) {
             return Response.json(
                 {
@@ -40,8 +40,8 @@ export async function GET(request: Request) {
         return Response.json(
             {
                 success: true,
-                messages: user[0]?.messages
-            }, { status: 401 }
+                messages: user[0].messages
+            }, { status: 200 }
         )
     } catch (error) {
         console.log("An unexpected error occured ", error)

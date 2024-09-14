@@ -1,7 +1,6 @@
 'use client'
 import MessageCard from '@/components/MessageCard'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { useToast } from '@/hooks/use-toast'
@@ -55,7 +54,7 @@ const page = () => {
     } finally {
       setIsSwitchLoading(false)
     }
-  }, [setValue])
+  }, [setValue,toast])
 
   //  fetching messages from database
   const fetchMessages = useCallback(async (refresh: boolean=false) => {
@@ -63,7 +62,7 @@ const page = () => {
     setIsSwitchLoading(false);
     try {
       const response = await axios.get<apiResponse>('/api/getMessages')
-      setMessages(response.data?.messages || [])
+      setMessages(response.data.messages || [])
       if (refresh) {
         toast({
           title: 'Refresing Messages',
@@ -94,9 +93,9 @@ const page = () => {
   const handleSwitchChange = async () => {
     try {
       const response = await axios.post<apiResponse>('/api/acceptMessages', {
-        acceptMessages: !acceptMessages
+        acceptMessages: !acceptMessages,
       })
-      setValue('acceptMessages', acceptMessages)
+      setValue('acceptMessages', !acceptMessages)
       toast({
         title: response.data.message,
         variant: 'default'
@@ -166,7 +165,7 @@ const page = () => {
       </Button>
       <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-6'>
         {messages.length > 0 ?(
-          messages.map((message,index)=>(
+          messages.map((message)=>(
             <MessageCard
             key={message._id}
             message={message}
