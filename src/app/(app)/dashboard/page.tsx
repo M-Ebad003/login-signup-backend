@@ -10,7 +10,6 @@ import { apiResponse } from '@/types/apiResponse'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { Loader2, RefreshCcw } from 'lucide-react'
-import { User } from 'next-auth'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -23,7 +22,7 @@ const page = () => {
   const { toast } = useToast();
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((message) => message._id! == messageId))
+    setMessages(messages.filter((message) => message._id !== messageId))
   }
 
   // session : gives you the current logged in user
@@ -54,10 +53,10 @@ const page = () => {
     } finally {
       setIsSwitchLoading(false)
     }
-  }, [setValue,toast])
+  }, [setValue, toast])
 
   //  fetching messages from database
-  const fetchMessages = useCallback(async (refresh: boolean=false) => {
+  const fetchMessages = useCallback(async (refresh: boolean = false) => {
     setLoading(true)
     setIsSwitchLoading(false);
     try {
@@ -85,6 +84,9 @@ const page = () => {
 
   useEffect(() => {
     if (!session || !session.user) return
+    if(messages.length === 0){
+      <div>No messages to display</div>
+    }
     fetchMessages();
     fetchAcceptMessage();
 
@@ -114,16 +116,16 @@ const page = () => {
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${session?.user.username}`
 
-  const copyToClipboard = ()=>{
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl)
     toast({
-      title : 'URL copied',
+      title: 'URL copied',
       description: 'Profile URL has been copied to clipboard'
     })
   }
   if (!session || !session.user) {
     redirect('/')
-    
+
   }
 
   return (
@@ -132,44 +134,44 @@ const page = () => {
       <div className='mb-4'>
         <h2 className='text-lg font-semibold mb-2'>Copy your Unique Link</h2>{' '}
         <div className='flex items-center'>
-          <input 
-          type='text'
-          value={profileUrl}
-          disabled
-          className='input input-bordered w-full p-2 mr-2'/>
+          <input
+            type='text'
+            value={profileUrl}
+            disabled
+            className='input input-bordered w-full p-2 mr-2' />
           <Button onClick={copyToClipboard}>Copy</Button>
         </div>
       </div>
       <div className='mb-4'>
-      <Switch
-      {...register('acceptMessages')}
-      checked={acceptMessages}
-      onCheckedChange={handleSwitchChange}
-      disabled={isSwitchLoading}
-      />
-      <span className='ml-2'>
-        Accept Messages : {acceptMessages ? 'On': 'Off'}
-      </span>
+        <Switch
+          {...register('acceptMessages')}
+          checked={acceptMessages}
+          onCheckedChange={handleSwitchChange}
+          disabled={isSwitchLoading}
+        />
+        <span className='ml-2'>
+          Accept Messages : {acceptMessages ? 'On' : 'Off'}
+        </span>
       </div>
-      <Separator/>
+      <Separator />
 
-      <Button className='mt-4' variant='outline' onClick={(e)=>{
+      <Button className='mt-4' variant='outline' onClick={(e) => {
         e.preventDefault();
         fetchMessages(true)
       }}>
         {loading ? (
-          <Loader2 className='h-4 w-4 animate-spin'/>
-        ): (
-          <RefreshCcw className='h-4 w-4'/>
+          <Loader2 className='h-4 w-4 animate-spin' />
+        ) : (
+          <RefreshCcw className='h-4 w-4' />
         )}
       </Button>
       <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-6'>
-        {messages.length > 0 ?(
-          messages.map((message)=>(
+        {messages.length > 0 ? (
+          messages.map((message) => (
             <MessageCard
-            key={message._id}
-            message={message}
-            onMessageDelete={handleDeleteMessage}/>
+              key={message._id}
+              message={message}
+              onMessageDelete={handleDeleteMessage} />
           ))
         ) : (
           <div>No messages to display.</div>

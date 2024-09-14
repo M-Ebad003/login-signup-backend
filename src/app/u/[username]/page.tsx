@@ -4,10 +4,8 @@ import { useParams } from 'next/navigation'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { useForm } from 'react-hook-form'
@@ -26,26 +24,21 @@ const page = () => {
       content: ""
     }
   })
-  const params = useParams();
+  const params = useParams<{username:string}>();
+  const username=params.username;
   const { toast } = useToast()
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     try {
       const response = await axios.post('/api/sendMessages', {
-        username: params.username,
-        content: data.content
+        ...data,
+        username
       })
-      if (!response.data.isAcceptingMessages) {
         toast({
-          title: "Error",
+          title: "Successful",
           description: response.data.message,
-          variant: 'destructive'
-        })
-      }
-      toast({
-        title: "Successfull",
-        description: response.data.message,
-      })
+        })   
+        form.reset({ ...form.getValues(), content: '' });
     } catch (error) {
       const axiosError = error as AxiosError<apiResponse>;
       toast({

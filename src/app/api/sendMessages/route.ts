@@ -27,12 +27,11 @@ export async function POST(request: Request) {
         user.messages.push(newMessage as Message);
 
         await user.save()
-        console.log("user messages",newMessage)
         return Response.json(
             {
                 success: true,
                 message: 'Message send successfully'
-            }, { status: 401 }
+            }, { status: 201 }
         )
     } catch (error) {
         console.log("Error while adding messages")
