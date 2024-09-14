@@ -6,6 +6,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { useForm } from 'react-hook-form'
@@ -16,19 +17,27 @@ import { Input } from '@/components/ui/input'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/hooks/use-toast'
 import { apiResponse } from '@/types/apiResponse'
+import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
 
 const page = () => {
+  const params = useParams<{username:string}>();
+  const username=params.username;
+  const { toast } = useToast();
+
+
+  const [isLoading, setIsLoading] = useState(false)
+
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
     defaultValues: {
       content: ""
     }
   })
-  const params = useParams<{username:string}>();
-  const username=params.username;
-  const { toast } = useToast()
 
+  const watchMessage= form.watch('content')
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
+    setIsLoading(true);
     try {
       const response = await axios.post('/api/sendMessages', {
         ...data,
@@ -47,15 +56,12 @@ const page = () => {
         variant: 'destructive'
       })
     }
+    setIsLoading(false);
   }
 
   return (
-    <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6'>
-      <div className='flex justify-center items-center text-center'>
-        <h1 className='mt-10 text-4xl font-bold'>Public Profile Link</h1>
-      </div>
-      <div className='mx-10 mt-5'>
-        <h3 className='font-semibold mb-4'>Send anonymous message to @{params.username}</h3>
+    <div className='container mx-auto my-8 p-6 bg-white rounded max-w-4xl'>
+        <h1 className=' text-center mb-6 text-4xl font-bold'>Public Profile Link</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -63,6 +69,7 @@ const page = () => {
               name="content"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Send anonymous message to @{username}</FormLabel>
                   <FormControl>
                     <Input className='h-14 text-left' placeholder="Write your anonymous message here " {...field} />
                   </FormControl>
@@ -71,11 +78,17 @@ const page = () => {
               )}
             />
             <div className='flex justify-center items-center'>
-              <Button type="submit">Submit</Button>
+              {isLoading ? (
+                <Button disabled>
+                  <Loader2 className='animate-spin'/>
+                  Please wait...
+                </Button>
+              ): (
+                  <Button disabled={isLoading || !watchMessage} type='submit'>Send Message</Button>
+              )}
             </div>
           </form>
         </Form>
-      </div>
     </div>
   )
 }
