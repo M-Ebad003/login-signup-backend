@@ -84,9 +84,6 @@ const page = () => {
 
   useEffect(() => {
     if (!session || !session.user) return
-    if(messages.length === 0){
-      <div>No messages to display</div>
-    }
     fetchMessages();
     fetchAcceptMessage();
 
@@ -111,18 +108,16 @@ const page = () => {
       })
     }
   }
-  // const { username } = session?.user as User;
-  // TODO: 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${session?.user.username}`
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(profileUrl)
+      toast({
+        title: 'URL copied',
+        description: 'Profile URL has been copied to clipboard'
+      })
+    }
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(profileUrl)
-    toast({
-      title: 'URL copied',
-      description: 'Profile URL has been copied to clipboard'
-    })
-  }
   if (!session || !session.user) {
     redirect('/')
 

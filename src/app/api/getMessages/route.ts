@@ -28,14 +28,20 @@ export async function GET(request: Request) {
             { $sort: { 'messages.createdAt': -1 } },
             { $group: { _id: '$_id', messages: { $push: '$messages' } } }
         ]).exec();
-        if (!user || user.length === 0) {
+        if (!user) {
             return Response.json(
                 {
                     success: false,
                     message: 'User not found'
                 }, { status: 401 }
             )
-
+            
+        }
+        if(user.length === 0){
+            return Response.json({
+                success: false,
+                message: 'No Messages to display'
+            },{status: 401})
         }
         return Response.json(
             {
