@@ -48,7 +48,6 @@ const page = () => {
       content: ""
     }
   })
-
   const watchMessage = form.watch('content')
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
@@ -149,8 +148,8 @@ const page = () => {
       <Separator className='my-6' />
       <div className='items-center text-center'>
         <div className='mb-4'>Get your Message Board</div>
-        <Link href='/sign-up'>
-          <Button>
+        <Link target='_blank' href='/sign-up'>
+          <Button >
             Create your account
           </Button>
           </Link>
