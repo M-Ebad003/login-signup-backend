@@ -1,18 +1,18 @@
 import { resend } from "@/lib/resend";
-import VerificationEmail from "../../emails/VerificationEmail";
 import { apiResponse } from "@/types/apiResponse";
+import ResetPasswordEmail from "../../emails/ResetPasswordEmail";
 
-export async function sendVerificationEmail(
+export async function sendPasswordForget(
   email: string,
   username: string,
-  verifyCode: string
+  verifyCode?: string
 ): Promise<apiResponse> {
   try {
     await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: email,
       subject: "Nextify Verification Code",
-      react: VerificationEmail({ username, otp: verifyCode }),
+      react: ResetPasswordEmail({ username}),
     });
     return {
       success: true,

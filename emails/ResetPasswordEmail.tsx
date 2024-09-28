@@ -8,22 +8,23 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import Link from "next/link";
 
 import * as React from "react";
 
 interface VerificationEmailProps {
   username: string;
-  otp: string;
+  otp?: string;
 }
 
-export default function VerificationEmail({
+export default function ResetPasswordEmail({
   username,
   otp,
 }: VerificationEmailProps) {
   return (
     <Html lang="en" dir="ltr">
       <Head>
-        <title>Verification Code</title>
+        <title>Reset Password</title>
         <Font
           fontFamily="Roboto"
           fallbackFontFamily="Verdana"
@@ -35,19 +36,18 @@ export default function VerificationEmail({
           fontStyle="normal"
         />
       </Head>
-      <Preview>Here&apos;s your verification code: {otp}</Preview>
+      <Preview>Here&apos;s your password Recovery email</Preview>
       <Section>
         <Row>
           <Heading as="h2">Hello {username},</Heading>
         </Row>
         <Row>
           <Text>
-            Thank you for registration.Please use the following verification
-            code to complete your registration:
+            <Link href="/newPassword">Reset Password here</Link>
           </Text>
         </Row>
         <Row>
-          <Text>{otp}</Text>
+          <Text></Text>
         </Row>
         <Row>
           <Text>
