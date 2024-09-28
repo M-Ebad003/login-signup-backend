@@ -8,10 +8,27 @@ export const POST = async (request: Request) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const updateUser= await UserModel.findByIdAndUpdate(
-        
-        {password: hashedPassword},
-        {new: true},
-    )
-  } catch (error) {}
+    const updateUser = await UserModel.findByIdAndUpdate(
+      { password: hashedPassword },
+      { new: true }
+    );
+    if (!updateUser) {
+      return Response.json(
+        {
+          success: false,
+          message: "password not updated",
+        },
+        { status: 400 }
+      );
+    }
+  } catch (error) {
+    console.log("error", error);
+    return Response.json(
+      {
+        success: false,
+        message: "unexpected error occured while updating password",
+      },
+      { status: 400 }
+    );
+  }
 };

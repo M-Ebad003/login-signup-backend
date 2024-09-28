@@ -1,6 +1,5 @@
 import { connectToDb } from "@/lib/database";
 import { UserModel } from "@/model/user.model";
-import ResetPasswordEmail from "../../../../emails/ResetPasswordEmail";
 import { sendPasswordForget } from "@/helpers/sendPasswordForget";
 
 export const POST = async (request: Request) => {
@@ -8,31 +7,32 @@ export const POST = async (request: Request) => {
   await connectToDb();
 
   try {
-    const existingUser = await UserModel.findOne({email});
+    const existingUser = await UserModel.findOne({ email });
 
-    if(!existingUser){
-        return Response.json({
-            success: false,
-            message: 'Email does not exist'
-        }, { status: 404 })
-    }
-    const username=existingUser.username
-    const emailResponse = await sendPasswordForget(
-        email,
-        username
-    )
-    if (!emailResponse.success) {
-        return Response.json({
-            successs: false,
-            message: emailResponse.message
-
-        }, { status: 500 });
-    }
-    return Response.json(
+    if (!existingUser) {
+      return Response.json(
         {
-       success: false,
-       message: 'Password recovery email send successfully'
-    })
+          success: false,
+          message: "Email does not exist",
+        },
+        { status: 404 }
+      );
+    }
+    const username = existingUser.username;
+    const emailResponse = await sendPasswordForget(email, username);
+    if (!emailResponse.success) {
+      return Response.json(
+        {
+          successs: false,
+          message: emailResponse.message,
+        },
+        { status: 500 }
+      );
+    }
+    return Response.json({
+      success: false,
+      message: "Password recovery email send successfully",
+    });
   } catch (error) {
     console.log("error ", error);
     return Response.json({

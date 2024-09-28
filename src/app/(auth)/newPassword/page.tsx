@@ -20,13 +20,14 @@ import { Button } from '@/components/ui/button';
 
 const newPassword = () => {
     const [loading, setloading] = useState(false)
+    const router= useRouter()
 
     const submitHandler=async(data: z.infer<typeof newPasswordSchema>)=>{
         try {
             const response = await axios.post('/api/new-password',{
                 password: data.password
             })
-            
+            router.push('/lastPage')
         } catch (error) {
             console.log('error updating password')
             const axiosError= error as AxiosError<apiResponse>
