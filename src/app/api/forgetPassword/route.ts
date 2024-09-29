@@ -19,7 +19,10 @@ export const POST = async (request: Request) => {
       );
     }
     const username = existingUser.username;
-    const emailResponse = await sendPasswordForget(email, username);
+    const userId= existingUser?._id
+    console.log(email);
+    console.log(username);
+    const emailResponse = await sendPasswordForget(email, username, userId);
     if (!emailResponse.success) {
       return Response.json(
         {
@@ -29,10 +32,13 @@ export const POST = async (request: Request) => {
         { status: 500 }
       );
     }
-    return Response.json({
-      success: false,
-      message: "Password recovery email send successfully",
-    });
+    return Response.json(
+      {
+        success: true,
+        message: "Password recovery email send successfully",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.log("error ", error);
     return Response.json({

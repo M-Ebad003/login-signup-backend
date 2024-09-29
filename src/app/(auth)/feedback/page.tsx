@@ -13,7 +13,7 @@ const PasswordRecoveryEmailSent = () => {
             An email has been sent to your email address to reset your password.
           </p>
           <Link
-            href="/login"
+            href="/sign-in"
             style={{
               fontSize: "0.875rem",
               color: "#000",

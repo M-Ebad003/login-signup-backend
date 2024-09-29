@@ -3,12 +3,13 @@ import { UserModel } from "@/model/user.model";
 import bcrypt from "bcryptjs";
 
 export const POST = async (request: Request) => {
-  const { password } = await request.json();
+  const { password, userId } = await request.json();
   await connectToDb();
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const updateUser = await UserModel.findByIdAndUpdate(
+      userId,
       { password: hashedPassword },
       { new: true }
     );
@@ -21,6 +22,13 @@ export const POST = async (request: Request) => {
         { status: 400 }
       );
     }
+    return Response.json(
+      {
+        success: true,
+        message: "Password updated successfully",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.log("error", error);
     return Response.json(
