@@ -19,9 +19,7 @@ export const POST = async (request: Request) => {
       );
     }
     const username = existingUser.username;
-    const userId= existingUser?._id
-    console.log(email);
-    console.log(username);
+    const userId= existingUser?._id;
     const emailResponse = await sendPasswordForget(email, username, userId);
     if (!emailResponse.success) {
       return Response.json(

@@ -84,11 +84,12 @@ const RecoverPassword = () => {
                   borderRadius: "0rem",
                 }}
               >
-                Send me a reset password email
-                {loading && (
+                {loading ? (
                   <div>
                     <Loader2 className="animate-spin" />
                   </div>
+                ) : (
+                  <div>Send me a Password Recovery Email</div>
                 )}
               </Button>
             </div>

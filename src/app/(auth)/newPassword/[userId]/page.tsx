@@ -52,7 +52,7 @@ const newPassword = () => {
     resolver: zodResolver(newPasswordSchema),
   });
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-sm shadow-lg p-10 space-y-10 bg-gray-300 rounded-lg">
         <div className="text-center">
           <h1 className="text-3xl">Recover your Password</h1>
