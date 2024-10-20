@@ -40,12 +40,11 @@ export default function ResetPasswordEmail({
       <Preview>Here&apos;s your password Recovery email</Preview>
       <Section>
         <Row>
-          <Heading as="h2">Hello cutie {username},</Heading>
+          <Heading as="h2">Hello {username},</Heading>
         </Row>
         <Row>
           <Text>
-            <p>copy this email you dumb</p>
-            <p>don't ever forget your password again</p>
+            <p>Don't ever forget your password again</p>
             <p>{`http://localhost:3000/newPassword/${userId}`}</p>
           </Text>
         </Row>

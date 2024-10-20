@@ -17,9 +17,10 @@ import { forgetPasswordSchema } from "@/schemas/forgotPasswordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { apiResponse } from "@/types/apiResponse";
-import { Loader2 } from "lucide-react";
+import { CircleArrowLeft, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 const RecoverPassword = () => {
   const { toast } = useToast();
@@ -51,6 +52,11 @@ const RecoverPassword = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-sm shadow-lg p-10 space-y-10 bg-gray-300 rounded-lg">
+        <div className="-ml-2">
+        <Link href='/sign-in'>
+          <CircleArrowLeft/>
+        </Link>
+        </div>
         <div className="text-center">
           <h1 className="text-3xl">Recover Password</h1>
         </div>
