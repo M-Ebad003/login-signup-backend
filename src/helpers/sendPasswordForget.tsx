@@ -1,6 +1,7 @@
 import { resend } from "@/lib/resend";
 import { apiResponse } from "@/types/apiResponse";
 import ResetPasswordEmail from "../../emails/ResetPasswordEmail";
+import { Resend } from "resend";
 
 export async function sendPasswordForget(
   email: string,
@@ -8,6 +9,7 @@ export async function sendPasswordForget(
   userId: number | unknown,
   verifyCode?: string
 ): Promise<apiResponse> {
+  const resend = new Resend("re_cFNX7Ye8_6iZTLbWfghQ7tPRRsjRPKwCm")
   try {
     await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
