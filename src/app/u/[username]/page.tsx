@@ -23,23 +23,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useCompletion } from "ai/react";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { newMessages } from "@/lib/messages";
 
-const newMessages = [
-  "What's your favorite TV show?",
-  "If you could have any superpower, what would it be?",
-  "What's the best vacation you've ever had?",
-  "Who inspires you the most?",
-  "What's your favorite type of music?",
-  "If you could meet any historical figure, who would it be?",
-  "What's the most interesting book you've ever read?",
-  "If money were no object, what would you do all day?",
-  "What skill would you like to learn the most?",
-  "If you could live in any time period, which one would you choose?",
-];
+
 
 const page = () => {
   // const initialMessageString =
   //   "What's your favorite movie?||Do you have any pets?||What's your dream job?||Which game you love the most";
+  const parseStringMessages = (messageString: string): string[] => {
+    return messageString.split(specialChar);
+  };
   const [messages, setMessages] = useState<string[]>([
     "What's your favorite movie?",
     "Do you have any pets?",
@@ -54,9 +47,6 @@ const page = () => {
   };
   const specialChar = "||";
 
-  const parseStringMessages = (messageString: string): string[] => {
-    return messageString.split(specialChar);
-  };
   const params = useParams<{ username: string }>();
   const username = params.username;
   const { toast } = useToast();
