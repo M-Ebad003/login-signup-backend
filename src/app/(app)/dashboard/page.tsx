@@ -20,6 +20,7 @@ const page = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const [copy, setCopy] = useState(false)
   const { toast } = useToast();
 
   const handleDeleteMessage = (messageId: string) => {
@@ -72,7 +73,7 @@ const page = () => {
     } catch (error) {
       const axiosError = error as AxiosError<apiResponse>;
       toast({
-        title: 'Error',
+        title: 'Nothing to Show',
         description: axiosError.response?.data.message || 'Failed to fetch message settings',
         variant: 'destructive'
       })
@@ -85,7 +86,7 @@ const page = () => {
 
   useEffect(() => {
     if (!session || !session.user) return
-    fetchMessages();
+      fetchMessages();
     fetchAcceptMessage();
 
   }, [session, setValue, fetchAcceptMessage, fetchMessages])
@@ -112,11 +113,15 @@ const page = () => {
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${session?.user.username}`
     const copyToClipboard = () => {
+      setCopy(true);
       navigator.clipboard.writeText(profileUrl)
       toast({
         title: 'URL copied',
         description: 'Profile URL has been copied to clipboard'
       })
+      setTimeout(()=>{
+        setCopy(false)
+      },3000)
     }
 
   if (!session || !session.user) {
@@ -135,7 +140,7 @@ const page = () => {
             value={profileUrl}
             disabled
             className='input input-bordered w-full p-2 mr-2' />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button onClick={copyToClipboard}>{copy ? 'Copied': 'Copy'}</Button>
         </div>
       </div>
       <div className='mb-4'>
@@ -163,9 +168,9 @@ const page = () => {
       </Button>
       <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-6'>
         {messages.length > 0 ? (
-          messages.map((message) => (
+          messages.map((message,index) => (
             <MessageCard
-              key={message?._id}
+              key={index}
               message={message}
               onMessageDelete={handleDeleteMessage} />
           ))
